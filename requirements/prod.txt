@@ -1,0 +1,4 @@
+-r ./common.txt
+
+# Media storage
+django-storages[boto3]==1.13.2

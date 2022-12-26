@@ -1,0 +1,46 @@
+# AMQP Python client
+amqp==5.1.1
+
+# ASGI specs, helper code, and adapters
+asgiref==3.6.0
+
+# Distributed Task Queue
+celery[amqp]==5.2.7
+
+# Websockets
+channels==4.0.0
+channels-redis==4.0.0
+
+# ASGI Server for Django
+daphne==4.0.0
+
+# Django framework
+django==4.1.4
+
+# Django REST framework and extensions
+djangorestframework==3.14.0
+django-oauth-toolkit==2.2.0
+
+# Cross-Orgin Resource Sharing (CORS) handler
+django-cors-headers==3.13.0
+
+# Env variables
+django-environ==0.9.0
+
+# Celery tasks monitoring
+flower==1.2.0
+
+# Image manipulation
+pillow==9.3.0
+
+# PostgreSQL database adapter
+psycopg2==2.9.5
+
+# JSON Web Token
+pyjwt==2.6.0
+
+# Redis python client
+redis==4.4.0
+
+# Messaging library via Celery
+kombu==5.2.4
