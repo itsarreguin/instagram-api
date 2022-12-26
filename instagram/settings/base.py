@@ -1,7 +1,6 @@
 """ Base settings file """
 
 import os
-import environ
 from pathlib import Path
 
 # Project path
@@ -9,10 +8,6 @@ PROJECT_PACKAGE = Path(__file__).resolve().parent.parent
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = PROJECT_PACKAGE.parent
-
-
-# Env variables
-env = environ.Env()
 
 
 # Application definition
@@ -42,6 +37,7 @@ DJANGO_REST_APPS = [
 
 PROJECT_APPS = [
     'instagram.core.apps.CoreAppConfig',
+    'instagram.tasks.celery.CeleryAppConfig',
 ]
 
 THIRD_APPS = []
@@ -115,7 +111,7 @@ REST_FRAMEWORK = {}
 
 
 # Celery configuration
-CELERY_BROKER_URL = env('CELERY_BROKER_URL', cast=str)
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
 CELERY_RESULT_BACKEND = CELERY_BROKER_URL
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'

@@ -1,0 +1,1 @@
+from instagram.tasks.celery import celery as celery

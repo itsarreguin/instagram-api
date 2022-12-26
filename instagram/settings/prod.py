@@ -3,11 +3,11 @@
 from instagram.settings.base import *
 
 
-SECRET_KEY = env('SECRET_KEY', cast=str)
+SECRET_KEY = os.getenv('SECRET_KEY')
 
-DEBUG = env('DEBUG', cast=bool)
+DEBUG = os.getenv('DEBUG')
 
-ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS')
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS')
 
 
 # Database
@@ -44,7 +44,7 @@ CHANNEL_LAYERS = {
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        'LOCATION': env.str('REDIS_CACHE_URL'),
+        'LOCATION': os.getenv('REDIS_CACHE_URL'),
     }
 }
 
@@ -52,12 +52,12 @@ CACHES = {
 # Email configuration
 # https://docs.djangoproject.com/en/4.1/topics/email/#email-backends
 
-EMAIL_BACKEND = env('EMAIL_BACKEND', cast=str)
-EMAIL_HOST = env('EMAIL_HOST', cast=str)
-EMAIL_PORT = env('EMAIL_PORT', cast=int)
-EMAIL_USE_TLS = env('EMAIL_USE_TLS', cast=bool)
-EMAIL_HOST_USER = env('EMAIL_HOST_USER', cast=str)
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', cast=str)
+EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 
 # CORS

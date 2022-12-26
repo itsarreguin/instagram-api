@@ -4,7 +4,7 @@ from instagram.settings.base import *
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env.str('SECRET_KEY', 'django-insecure-j-rb2bfx2&ex^n7as2jhutrcfa6psshs3a1ae!e$)0dkvffx0w')
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-j-rb2bfx2&ex^n7as2jhutrcfa6psshs3a1ae!e$)0dkvffx0w')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -58,8 +58,8 @@ CELERY_TASK_EAGER_PROPAGATES = True
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.mailtrap.io'
 EMAIL_PORT = 2525
-EMAIL_HOST_USER = env('EMAIL_HOST_USER_DEV', cast=str)
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD_DEV', cast=str)
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER_DEV')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD_DEV')
 
 
 # CORS
