@@ -1,0 +1,1 @@
+from instagram.core.models.user import User as User

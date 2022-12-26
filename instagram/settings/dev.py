@@ -58,8 +58,8 @@ CELERY_TASK_EAGER_PROPAGATES = True
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.mailtrap.io'
 EMAIL_PORT = 2525
-EMAIL_HOST_USER = env.str('EMAIL_HOST_USER_DEV')
-EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD_DEV')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER_DEV', cast=str)
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD_DEV', cast=str)
 
 
 # CORS

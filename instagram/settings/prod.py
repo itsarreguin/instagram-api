@@ -3,9 +3,9 @@
 from instagram.settings.base import *
 
 
-SECRET_KEY = env.str('SECRET_KEY')
+SECRET_KEY = env('SECRET_KEY', cast=str)
 
-DEBUG = env.bool('DEBUG')
+DEBUG = env('DEBUG', cast=bool)
 
 ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS')
 
@@ -52,12 +52,12 @@ CACHES = {
 # Email configuration
 # https://docs.djangoproject.com/en/4.1/topics/email/#email-backends
 
-EMAIL_BACKEND = env('EMAIL_BACKEND')
-EMAIL_HOST = env.str('EMAIL_HOST')
-EMAIL_PORT = env.int('EMAIL_PORT')
-EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS')
-EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
+EMAIL_BACKEND = env('EMAIL_BACKEND', cast=str)
+EMAIL_HOST = env('EMAIL_HOST', cast=str)
+EMAIL_PORT = env('EMAIL_PORT', cast=int)
+EMAIL_USE_TLS = env('EMAIL_USE_TLS', cast=bool)
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', cast=str)
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', cast=str)
 
 
 # CORS

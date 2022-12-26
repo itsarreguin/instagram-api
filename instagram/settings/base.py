@@ -20,6 +20,10 @@ ASGI_APPLICATION = 'instagram.asgi.application'
 WSGI_APPLICATION = 'instagram.wsgi.application'
 
 
+# Auth user model
+AUTH_USER_MODEL = 'core.User'
+
+
 # Application definition
 
 DJANGO_APPS = [
@@ -36,7 +40,9 @@ DJANGO_REST_APPS = [
     'corsheaders',
 ]
 
-PROJECT_APPS = []
+PROJECT_APPS = [
+    'instagram.core.apps.CoreAppConfig',
+]
 
 THIRD_APPS = []
 
@@ -109,7 +115,7 @@ REST_FRAMEWORK = {}
 
 
 # Celery configuration
-CELERY_BROKER_URL = env.str('CELERY_BROKER_URL')
+CELERY_BROKER_URL = env('CELERY_BROKER_URL', cast=str)
 CELERY_RESULT_BACKEND = CELERY_BROKER_URL
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
