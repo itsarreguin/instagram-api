@@ -38,6 +38,7 @@ DJANGO_REST_APPS = [
 PROJECT_APPS = [
     'instagram.core.apps.CoreAppConfig',
     'instagram.tasks.celery.CeleryAppConfig',
+    'instagram.apps.users.apps.UsersConfig',
 ]
 
 THIRD_APPS = []
