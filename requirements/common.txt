@@ -1,6 +1,9 @@
 # AMQP Python client
 amqp==5.1.1
 
+# Argon2 password hashing algorithm
+argon2-cffi==21.3.0
+
 # ASGI specs, helper code, and adapters
 asgiref==3.6.0
 

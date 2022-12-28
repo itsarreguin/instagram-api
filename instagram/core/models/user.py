@@ -130,6 +130,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(_('is staff'), default=False)
     is_verified = models.BooleanField(_('is verified'), default=False)
 
+    date_joined = models.DateTimeField(default=timezone.now)
+
     objects = UserManager()
 
     USERNAME_FIELD = 'username'
