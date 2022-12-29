@@ -1,32 +1,16 @@
 """ Users tasks module """
 
-from datetime import timedelta
-
-import jwt
-
 # Django imports
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from django.utils import timezone
 
 # Instagram tasks
 from instagram.tasks import celery
 # Instagram models
 from instagram.core.models import User
-
-
-def gen_verification_token(user: User):
-    exp_date = timezone.now() + timedelta(minutes=15)
-
-    payload = {
-        'user': user.username,
-        'exp': int(exp_date.timestamp()),
-        'type': 'verification_email'
-    }
-    token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
-
-    return token
+# Instagram utils
+from instagram.utils.mail import gen_verification_token
 
 
 @celery.task(max_retries=4)
