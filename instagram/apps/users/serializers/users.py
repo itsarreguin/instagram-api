@@ -10,6 +10,7 @@ from django.contrib.auth import (
 from django.core.validators import RegexValidator
 
 from rest_framework import serializers
+from rest_framework.authtoken.models import Token
 from rest_framework.validators import UniqueValidator
 
 # Instagram models
@@ -133,6 +134,30 @@ class UserLoginSerializer(serializers.Serializer):
     """User login serializer class
 
     Fields:
-        username (charfield): _description_
-        password (charfield): _description_
+        username (charfield): Check if username exists
+        password (charfield): Check if user password is correct
     """
+
+    username = serializers.CharField(min_length=3, max_length=30)
+    password = serializers.CharField(min_length=8, max_length=64)
+
+    def validate(self, validated_data):
+        """ Verified user credentials """
+        user = authenticate(
+            username=validated_data['username'],
+            password=validated_data['password']
+        )
+        if not user:
+            raise serializers.ValidationError('Invalid credentials')
+        if not user.is_verified:
+            raise serializers.ValidationError('Account is not active yet')
+
+        self.context['user'] = user
+
+        return validated_data
+
+    def create(self, validated_data):
+        """ Generete or retrieve new token """
+        token, created = Token.objects.get_or_create(user=self.context['user'])
+
+        return self.context['user'], token.key

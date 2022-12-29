@@ -22,21 +22,25 @@ from instagram.apps.users.serializers import (
 
 
 class UserViewSet(mixins.RetrieveModelMixin,
-                viewsets.GenericViewSet):
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet):
     """User viewset
 
     This is the view for users that controls main actions
     like create, update, delete, read data and more.
     """
-    queryset = User.objects.all()
+    queryset = User.objects.filter(is_active=True, is_verified=True)
     serializer_class = UserModelSerializer
     lookup_field = 'username'
 
     def get_permissions(self):
-        if self.action in ['signup', 'verification']:
+        if self.action in ['signup', 'verification', 'login']:
             permissions = [AllowAny]
 
         return [permission() for permission in permissions]
+
+    def get_serializer_class(self):
+        return super().get_serializer_class()
 
     @action(detail=False, methods=['POST'])
     def signup(self, request):
@@ -69,4 +73,16 @@ class UserViewSet(mixins.RetrieveModelMixin,
     @action(detail=False, methods=['POST'])
     def login(self, request):
         """ Users login action """
-        serializer = UserLoginSerializer()
+        serializer = UserLoginSerializer(data=request.data)
+
+        if serializer.is_valid(raise_exception=True):
+            user, token = serializer.save()
+
+            data = {
+                'user': UserModelSerializer(instance=user).data,
+                'access_token': token
+            }
+
+            return Response(data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
