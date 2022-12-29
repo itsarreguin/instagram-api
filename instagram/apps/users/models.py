@@ -17,7 +17,7 @@ class Profile(BaseAbstractModel):
         null=True,
         upload_to='users/profile'
     )
-    biography = models.TextField(_('biography'))
+    biography = models.TextField(_('biography'), blank=True)
     link = models.URLField(_('website'), blank=True, null=True)
     is_public = models.BooleanField(_('is public'), default=True)
 

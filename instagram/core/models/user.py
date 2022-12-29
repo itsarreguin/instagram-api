@@ -113,7 +113,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
 
     email_regex_validator = RegexValidator(
-        regex=r'^([a-zA-Z0-9\._-]{4,}[^\s])@\w{2,8}\.\w{2,15}(\.\w{2,15})?$'
+        regex=r'^([a-zA-Z0-9\._-]{4,}[^\s])@\w{2,25}\.\w{2,15}(\.\w{2,15})?$'
     )
 
     email = models.EmailField(
@@ -144,10 +144,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural: str = _('Users')
 
     def __str__(self) -> str:
-        return self.get_username
-
-    @property
-    def get_username(self) -> str:
         return '%s' % self.username
 
     def get_full_name(self) -> str:

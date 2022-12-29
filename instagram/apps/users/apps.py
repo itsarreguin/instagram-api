@@ -8,3 +8,6 @@ class UsersConfig(AppConfig):
     default_auto_field: str = 'django.db.models.BigAutoField'
     name: str = 'instagram.apps.users'
     verbose_name: str = 'Users'
+
+    def ready(self) -> None:
+        import instagram.signals.profile
