@@ -136,6 +136,9 @@ USE_TZ = True
 # Django admin url
 ADMIN_URL = 'admin/'
 
+# Email settings
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

@@ -1,5 +1,8 @@
 """ Users serializers """
 
+import jwt
+
+from django.conf import settings
 from django.contrib.auth import (
     password_validation,
     authenticate
@@ -9,7 +12,10 @@ from django.core.validators import RegexValidator
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
+# Instagram models
 from instagram.apps.users.models import User
+# Instagram tasks
+from instagram.apps.users.tasks import send_verification_email
 
 
 class UserModelSerializer(serializers.ModelSerializer):
@@ -84,9 +90,43 @@ class UserSignUpSerializer(serializers.Serializer):
     def create(self, validated_data):
         validated_data.pop('password_confirmation')
 
-        user = User.objects.create_user(**validated_data, is_verified=False)
+        user = User.objects.create_user(**validated_data)
+        send_verification_email.apply_async(args=[user.id], countdown=5)
 
         return user
+
+
+class AccountVerificationSerializer(serializers.Serializer):
+    """ Account verification serializer class
+
+    Fields:
+        token (charfield): Check user token to verify their account
+    """
+
+    token = serializers.CharField()
+
+    def validate_token(self, data):
+        """ Verify if user token is valid """
+        try:
+            payload = jwt.decode(data, settings.SECRET_KEY, algorithms=['HS256'])
+        except jwt.ExpiredSignatureError:
+            raise serializers.ValidationError('Verification link has been expired')
+        except jwt.PyJWTError:
+            raise serializers.ValidationError('Invalid token')
+        if payload['type'] != 'verification_email':
+            raise serializers.ValidationError('Invalid token')
+
+        self.context['payload'] = payload
+
+        return data
+
+    def save(self):
+        """ Change user verification status to True """
+        payload = self.context['payload']
+        user = User.objects.get(username=payload['user'])
+        user.is_verified = True
+        user.save()
+
 
 
 class UserLoginSerializer(serializers.Serializer):
