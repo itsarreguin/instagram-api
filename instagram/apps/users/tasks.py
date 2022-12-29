@@ -1,4 +1,4 @@
-""" Users tasks module """
+""" Background tasks module for users """
 
 # Django imports
 from django.conf import settings

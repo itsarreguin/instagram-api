@@ -1,0 +1,1 @@
+from instagram.apps.posts.models.posts import Post as Post

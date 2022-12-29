@@ -40,6 +40,7 @@ PROJECT_APPS = [
     'instagram.core.apps.CoreAppConfig',
     'instagram.tasks.celery.CeleryAppConfig',
     'instagram.apps.users.apps.UsersConfig',
+    'instagram.apps.posts.apps.PostsConfig',
 ]
 
 THIRD_APPS = []

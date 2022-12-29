@@ -141,23 +141,17 @@ class UserLoginSerializer(serializers.Serializer):
     username = serializers.CharField(min_length=3, max_length=30)
     password = serializers.CharField(min_length=8, max_length=64)
 
-    def validate(self, validated_data):
-        """ Verified user credentials """
-        user = authenticate(
-            username=validated_data['username'],
-            password=validated_data['password']
-        )
-        if not user:
-            raise serializers.ValidationError('Invalid credentials')
-        if not user.is_verified:
-            raise serializers.ValidationError('Account is not active yet')
+    def validate(self, data):
+        username = data['username']
+        password = data['password']
 
+        user = authenticate(username=username, password=password)
         self.context['user'] = user
 
-        return validated_data
+        return data
 
-    def create(self, validated_data):
-        """ Generete or retrieve new token """
-        token, created = Token.objects.get_or_create(user=self.context['user'])
+    def create(self, data):
+        """ Generate or get user token """
+        token  = Token.objects.get_or_create(user=self.context['user'])
 
         return self.context['user'], token.key
