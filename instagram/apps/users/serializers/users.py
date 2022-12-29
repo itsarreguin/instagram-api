@@ -45,11 +45,11 @@ class UserSignUpSerializer(serializers.Serializer):
     last_name = serializers.CharField(min_length=2, max_length=30)
 
     username_regex_validator = RegexValidator(
-        regex=r'^([\w\d\._]+[^\s\-@\*\[\{(\)\}\]\/\+:,;\\%&$]){4,30}$',
+        regex=r'^([\w\d\._]+[^\s\-@\*\[\{(\)\}\]\/\+:,;\\%&$]){2,30}$',
         message='Username can be only contains letters, numbers, . or _'
     )
     username = serializers.CharField(
-        min_length=4,
+        min_length=2,
         max_length=30,
         validators=[
             UniqueValidator(queryset=User.objects.all()),
@@ -58,7 +58,7 @@ class UserSignUpSerializer(serializers.Serializer):
     )
 
     email_regex_validator = RegexValidator(
-        regex=r'^([a-zA-Z0-9\._-]{4,}[^\s])@\w{2,25}\.\w{2,15}(\.\w{2,15})?$'
+        regex=r'^([a-zA-Z0-9\._-]{3,}[^\s])@\w{2,25}\.\w{2,15}(\.\w{2,15})?$'
     )
     email = serializers.EmailField(
         validators=[
@@ -70,33 +70,21 @@ class UserSignUpSerializer(serializers.Serializer):
     password = serializers.CharField(min_length=8, max_length=64)
     password_confirmation = serializers.CharField(min_length=8, max_length=64)
 
-    def validate(self, validated_data):
-        password = validated_data['password']
-        password_conf = validated_data['password_confirmation']
+    def validate(self, data):
+        password = data['password']
+        password_conf = data['password_confirmation']
 
         if password != password_conf:
             raise serializers.ValidationError('Password didn\'t match')
 
         password_validation.validate_password(password)
 
-        return validated_data
-
-    def validate_username(self, validated_data):
-        username = validated_data['username']
-
-        if User.objects.filter(username=username).exists():
-            raise serializers.ValidationError('This username is taken')
-
-    def validate_email(self, validated_data):
-        email = validated_data['email']
-
-        if User.objects.filter(email=email).exists:
-            raise serializers.ValidationError('This email already in use')
+        return data
 
     def create(self, validated_data):
         validated_data.pop('password_confirmation')
 
-        user = User.objects.create_superuser(**validated_data, is_verified=False)
+        user = User.objects.create_user(**validated_data, is_verified=False)
 
         return user
 

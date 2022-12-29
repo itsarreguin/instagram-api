@@ -99,7 +99,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(_('last name'), max_length=40, blank=True, null=True)
 
     username_regex_validator = RegexValidator(
-        regex=r'^([\w\d\._]+[^\s\-@\*\[\{(\)\}\]\/\+:,;\\%&$]){4,30}$',
+        regex=r'^([\w\d\._]+[^\s\-@\*\[\{(\)\}\]\/\+:,;\\%&$]){3,30}$',
         message='Username can be only contains letters, numbers, . or _'
     )
 
@@ -113,7 +113,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
 
     email_regex_validator = RegexValidator(
-        regex=r'^([a-zA-Z0-9\._-]{4,}[^\s])@\w{2,25}\.\w{2,15}(\.\w{2,15})?$'
+        regex=r'^([a-zA-Z0-9\._-]{3,}[^\s])@\w{2,25}\.\w{2,15}(\.\w{2,15})?$'
     )
 
     email = models.EmailField(

@@ -1,10 +1,20 @@
-""" User URL's module """
+""" Users URL's and routing module """
 
 from typing import List
 
-from django.urls import path
+from django.urls import path, include
+
+from rest_framework.routers import DefaultRouter
+
+from instagram.apps.users.views import UserViewSet
 
 
 app_name: str = 'users'
 
-urlpatterns: List[path] = []
+router = DefaultRouter()
+router.register(prefix=r'users', viewset=UserViewSet, basename='users')
+
+urlpatterns: List[path] = [
+
+    path(route='', view=include(router.urls))
+]

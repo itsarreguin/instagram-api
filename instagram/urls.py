@@ -23,6 +23,10 @@ from django.conf.urls.static import static
 urlpatterns = [
 
     path(
+        route = 'api/v1/',
+        view = include('instagram.apps.users.urls')
+    ),
+    path(
         route = settings.ADMIN_URL,
         view = admin.site.urls
     )
