@@ -1,9 +1,10 @@
+from django.dispatch import receiver
 from django.db.models.signals import (
     post_save,
     pre_save
 )
-from django.dispatch import receiver
 
+# Instagram models
 from instagram.core.models import User
 from instagram.apps.users.models import Profile
 
