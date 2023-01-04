@@ -24,7 +24,7 @@ class Post(models.Model):
         null=False,
         upload_to='users/posts'
     )
-    url = models.SlugField(_('url'), unique=True, blank=False, null=False)
+    url = models.SlugField(_('url'), unique=True, blank=True)
     description = models.TextField(_('description '), blank=True)
 
     class Meta:

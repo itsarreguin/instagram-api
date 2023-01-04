@@ -27,6 +27,10 @@ urlpatterns = [
         view = include('instagram.apps.users.urls')
     ),
     path(
+        route = 'api/v1/',
+        view = include('instagram.apps.posts.urls')
+    ),
+    path(
         route = settings.ADMIN_URL,
         view = admin.site.urls
     )

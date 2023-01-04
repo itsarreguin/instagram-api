@@ -4,3 +4,6 @@ django-extensions==3.2.1
 
 # Debugging
 ipdb==0.13.11
+
+# API endpoints
+httpie==3.2.1
