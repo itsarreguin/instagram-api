@@ -136,7 +136,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'username'
     EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'email']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'email']
 
     class Meta:
         """ Meta class """

@@ -1,1 +1,2 @@
 from instagram.apps.posts.serializers.posts import PostModelSerializer as PostModelSerializer
+from instagram.apps.posts.serializers.posts import PostDetailSerializer as PostDetailSerializer

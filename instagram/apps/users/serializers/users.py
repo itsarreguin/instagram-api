@@ -23,7 +23,10 @@ class UserModelSerializer(serializers.ModelSerializer):
     """User model serializer class
 
     Fields:
-        serializers (_type_): _description_
+        username (charfield): Username from user
+        first_name (charfield): User first name
+        last_name (charfield): User last name
+        email (emailfield): Get the user email address
     """
 
     class Meta:

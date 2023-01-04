@@ -5,6 +5,9 @@ from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 
+# Pillo imports
+from PIL import Image
+
 # Instagram tasks
 from instagram.tasks import celery
 # Instagram models
@@ -32,3 +35,8 @@ def send_verification_email(user_id):
     msg = EmailMultiAlternatives(subject, template, from_email, to=[user.email])
     msg.attach_alternative(template, 'text/html')
     msg.send(fail_silently=False)
+
+
+@celery.task
+def resize_profile_pic():
+    pass

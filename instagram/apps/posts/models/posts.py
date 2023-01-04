@@ -5,10 +5,11 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 # Instagram models
+from instagram.core.models.abstracts import BaseAbstractModel
 from instagram.core.models import User
 
 
-class Post(models.Model):
+class Post(BaseAbstractModel):
     """Post model class
 
     Fields:
