@@ -15,9 +15,7 @@ from instagram.apps.posts.serializers import (
 
 class PostViewSet(viewsets.ModelViewSet):
     """"""
-    serializer_class = PostModelSerializer
     lookup_field = 'url'
-    # permission_classes = [IsAuthenticated]
 
     def get_queryset(self, url: str = None):
         if url is None:
@@ -25,13 +23,27 @@ class PostViewSet(viewsets.ModelViewSet):
 
         return self.get_serializer().Meta.model.objects.filter(url=url).first()
 
+    def get_serializer_class(self):
+        """ Return serializer based on action """
+        if self.action in ['list', 'retrieve']:
+            return PostDetailSerializer
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            return PostModelSerializer
+
+    # def get_permissions(self):
+    #     permissions = [IsAuthenticated]
+
+    #     return [permission() for permission in permissions]
+
     def list(self, request, url = None, *args, **kwargs):
         serializer = self.serializer_class(self.get_queryset(), many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
+        serializer_class = self.get_serializer_class()
+
+        serializer = serializer_class(data=request.data)
 
         if serializer.is_valid(raise_exception=True):
             serializer.save()
@@ -42,7 +54,9 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def retrieve(self, request, url = None, *args, **kwargs):
         queryset = self.get_queryset(url=url)
-        serializer = PostDetailSerializer(instance=queryset, context = {'request': request})
+        serializer_class = self.get_serializer_class()
+
+        serializer = serializer_class(instance=queryset, context={ 'request': request })
 
         if queryset:
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -52,8 +66,27 @@ class PostViewSet(viewsets.ModelViewSet):
             status = status.HTTP_404_NOT_FOUND
         )
 
-    def update(self, request, *args, **kwargs):
-        pass
+    def update(self, request, url = None, *args, **kwargs):
+        queryset = self.get_queryset(url=url)
+        serializer_class = self.get_serializer_class()
+
+        serializer = serializer_class(instance=queryset, data=request.data)
+
+        if queryset:
+            if serializer.is_valid(raise_exception=True):
+                serializer.save()
+
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(
+            data = { 'error': 'Resource not found' },
+            status = status.HTTP_404_NOT_FOUND
+        )
+
+    def partial_update(self, request, *args, **kwargs):
+        return super().partial_update(request, *args, **kwargs)
 
     def destroy(self, request, url = None, *args, **kwargs):
         post = self.get_queryset(url=url)

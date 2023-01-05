@@ -4,6 +4,17 @@ import csv
 from instagram.core.models import User
 
 
+UPPPER_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+LOWER_CHARS = 'abcdefghijklmnopqrstuvwxyz'
+
+SPECIAL_CHARS = '_-'
+
+NUMBER_CHARS = '0123456789'
+
+RAND_CHARS = UPPPER_CHARS + LOWER_CHARS + SPECIAL_CHARS + NUMBER_CHARS
+
+
 def users_loader(filename: str = None):
     """users loader
 
