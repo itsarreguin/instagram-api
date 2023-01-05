@@ -12,7 +12,6 @@ class CustomUserAdmin(UserAdmin):
         'username',
         'first_name',
         'last_name',
-        'username',
         'is_verified'
     ]
 

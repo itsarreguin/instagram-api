@@ -6,5 +6,5 @@ from instagram.tasks import celery
 
 
 @celery.task
-def resize_post_imeg():
+def resize_post_image():
     pass

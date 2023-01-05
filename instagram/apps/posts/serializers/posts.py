@@ -8,6 +8,25 @@ from instagram.apps.posts.models import Post
 from instagram.apps.users.serializers import UserModelSerializer
 
 
+class PostCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Post
+
+        exclude = [
+            'author',
+            'url',
+            'created',
+            'modified'
+        ]
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        Post.objects.create(author=user, **validated_data)
+
+        return validated_data
+
+
 class PostModelSerializer(serializers.ModelSerializer):
 
     author = UserModelSerializer(source='user', read_only=True)

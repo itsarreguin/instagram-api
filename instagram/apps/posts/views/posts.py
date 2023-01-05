@@ -5,9 +5,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 
-# Instagram models
-from instagram.apps.posts.models import Post
+# Instagram Serializers
 from instagram.apps.posts.serializers import (
+    PostCreateSerializer,
     PostModelSerializer,
     PostDetailSerializer,
 )
@@ -25,15 +25,20 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         """ Return serializer based on action """
+        if self.action == 'create':
+            return PostCreateSerializer
         if self.action in ['list', 'retrieve']:
             return PostDetailSerializer
-        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+        if self.action in ['update', 'partial_update', 'destroy']:
             return PostModelSerializer
 
-    # def get_permissions(self):
-    #     permissions = [IsAuthenticated]
+    def get_permissions(self):
+        permissions = [IsAuthenticated]
 
-    #     return [permission() for permission in permissions]
+        if self.action in ['update', 'partial_update', 'destroy']:
+            pass
+
+        return [permission() for permission in permissions]
 
     def list(self, request, url = None, *args, **kwargs):
         serializer = self.serializer_class(self.get_queryset(), many=True)
@@ -43,7 +48,7 @@ class PostViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer_class = self.get_serializer_class()
 
-        serializer = serializer_class(data=request.data)
+        serializer = serializer_class(data=request.data, context={ 'request': request })
 
         if serializer.is_valid(raise_exception=True):
             serializer.save()
