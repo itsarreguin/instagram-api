@@ -1,7 +1,7 @@
 from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 
-# Models
+# Instagram models
 from instagram.core.models import User
 
 
@@ -12,7 +12,8 @@ class CustomUserAdmin(UserAdmin):
         'username',
         'first_name',
         'last_name',
-        'is_verified'
+        'is_verified',
+        'is_active'
     ]
 
     list_display_links = [

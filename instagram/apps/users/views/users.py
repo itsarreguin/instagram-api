@@ -15,7 +15,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
 
-# Instagram Models
+# Instagram models
 from instagram.core.models import User
 # Instagram serializers
 from instagram.apps.users.serializers import (
@@ -28,23 +28,17 @@ from instagram.apps.users.serializers import (
 from instagram.apps.users.permissions import IsAccountOwner
 
 
-class UserViewSet(mixins.RetrieveModelMixin,
+class UserAuthViewSet(mixins.RetrieveModelMixin,
+    mixins.CreateModelMixin,
     mixins.UpdateModelMixin,
     viewsets.GenericViewSet):
-    """User viewset
+    """User auth viewset
 
-    This is the view for users that controls main actions
-    like create, update, delete, read data and more.
+    Viewset that controls user authentication
     """
 
+    queryset = User.objects.all()
     lookup_field = 'username'
-
-    def get_queryset(self, username: str = None):
-        """ Return a queryset type """
-        if not username:
-            return User.objects.all()
-
-        return User.objects.filter(username=username).first()
 
     def get_permissions(self):
         """ Add permissions depends on the action """
@@ -52,8 +46,6 @@ class UserViewSet(mixins.RetrieveModelMixin,
 
         if self.action in ['signup', 'verification', 'login']:
             permissions = [AllowAny]
-        elif self.action == 'retrieve':
-            permissions = [IsAuthenticated, IsAccountOwner]
 
         return [permission() for permission in permissions]
 
@@ -65,8 +57,6 @@ class UserViewSet(mixins.RetrieveModelMixin,
             return UserLoginSerializer
         if self.action == 'verification':
             return AccountVerificationSerializer
-        if self.action == 'retrieve':
-            return UserModelSerializer
 
     @action(detail=False, methods=['POST'])
     def signup(self, request: Request):
@@ -119,10 +109,45 @@ class UserViewSet(mixins.RetrieveModelMixin,
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def retrieve(self, request: Request, username: str, *args: Any, **kwargs: Any):
-        """ Retrieve user data """
-        user = super(UserViewSet, self).retrieve(request, *args, **kwargs)
-        queryset = self.get_queryset(username = username)
+
+class UserViewSet(viewsets.ModelViewSet):
+    """ User viewset class
+
+    This is the view for users that controls main actions
+    like create, update, delete, read data and more.
+    """
+
+    lookup_field = 'username'
+
+    def get_queryset(self, username: str = None):
+        """ Returns queryset type if username is present """
+        if not username:
+            return User.objects.all()
+
+        return User.objects.filter(username=username).first()
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return UserModelSerializer
+
+    def get_permissions(self):
+        permissions = [IsAuthenticated]
+
+        if self.action in ['retrieve', 'update', 'destroy']:
+            permissions.append(IsAccountOwner)
+
+        return [permission() for permission in permissions]
+
+    def retrieve(self, request: Request, username: str = None, *args: Any, **kwargs: Any):
+        serializer_class = self.get_serializer_class()
+        queryset = self.get_queryset(username=username)
+
+        serializer = serializer_class(instance=queryset)
 
         if queryset:
-            return Response(user.data, status=status.HTTP_200_OK)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        return Response(
+            data = { 'detail': 'Resource not found' },
+            status = status.HTTP_404_NOT_FOUND
+        )
