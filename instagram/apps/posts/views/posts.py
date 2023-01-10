@@ -11,10 +11,16 @@ from instagram.apps.posts.serializers import (
     PostModelSerializer,
     PostDetailSerializer,
 )
+# Instagram permissions
+from instagram.apps.posts.permissions import IsPostOwner
 
 
 class PostViewSet(viewsets.ModelViewSet):
-    """"""
+    """ Post view set class
+
+    This view controls all actions linked on the posts
+    """
+
     lookup_field = 'url'
 
     def get_queryset(self, url: str = None):
@@ -36,7 +42,7 @@ class PostViewSet(viewsets.ModelViewSet):
         permissions = [IsAuthenticated]
 
         if self.action in ['update', 'partial_update', 'destroy']:
-            pass
+            permissions.append(IsPostOwner)
 
         return [permission() for permission in permissions]
 

@@ -15,6 +15,8 @@ from rest_framework.validators import UniqueValidator
 
 # Instagram models
 from instagram.apps.users.models import User
+# Instagram serializers
+from instagram.apps.users.serializers.profile import ProfileModelSerializer
 # Instagram tasks
 from instagram.apps.users.tasks import send_verification_email
 
@@ -29,6 +31,8 @@ class UserModelSerializer(serializers.ModelSerializer):
         email (emailfield): Get the user email address
     """
 
+    profile = ProfileModelSerializer(read_only=True)
+
     class Meta:
         model = User
         fields = [
@@ -36,6 +40,7 @@ class UserModelSerializer(serializers.ModelSerializer):
             'first_name',
             'last_name',
             'email',
+            'profile'
         ]
 
 

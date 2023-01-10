@@ -1,7 +1,8 @@
+# Django imports
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-# Models
+# Instgram models
 from instagram.core.models.abstracts import BaseAbstractModel
 from instagram.core.models import User
 
