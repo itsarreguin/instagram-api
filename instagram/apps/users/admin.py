@@ -1,5 +1,7 @@
+# Django imports
 from django.contrib import admin
 
+# Instagram models
 from instagram.apps.users.models import Profile
 
 
@@ -17,6 +19,6 @@ class ProfileModelAdmin(admin.ModelAdmin):
         if request.user.profile.is_public:
             queryset.update(is_public=False)
         else:
-            queryset.update(is_pulic=True)
+            queryset.update(is_public=True)
 
     change_public_status.short_description = 'Change public status'

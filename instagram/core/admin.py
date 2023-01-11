@@ -1,5 +1,10 @@
+""" Admin user model actions and definitions """
+
+# Django imports
 from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
+from django.http import HttpRequest
+from django.db.models import QuerySet
 
 # Instagram models
 from instagram.core.models import User
@@ -16,10 +21,7 @@ class CustomUserAdmin(UserAdmin):
         'is_active'
     ]
 
-    list_display_links = [
-        'username',
-        'first_name',
-    ]
+    list_display_links = ['username', 'first_name',]
 
     list_filter = [
         'username',
@@ -28,15 +30,32 @@ class CustomUserAdmin(UserAdmin):
         'is_verified'
     ]
 
-    actions = ['change_verification_status']
+    actions = [
+        'enable_user',
+        'verified_account',
+        'disable_user',
+        'unverified_account',
+    ]
 
-    def change_verification_status(self, request, queryset):
-        if request.user.is_verified:
-            queryset.update(is_verified=False)
-        else:
-            queryset.update(is_verified=True)
+    def enable_user(self, request: HttpRequest, queryset: QuerySet):
+        queryset.update(is_active=True)
 
-    change_verification_status.short_description = 'Change verification status'
+    enable_user.short_description = 'Enable user'
+
+    def verified_account(self, request: HttpRequest, queryset: QuerySet):
+        queryset.update(is_verified=True)
+
+    verified_account.short_description = 'Verify account'
+
+    def disable_user(self, request: HttpRequest, queryset: QuerySet):
+        queryset.update(is_active=False)
+
+    disable_user.short_description = 'Disable user'
+
+    def unverified_account(self, request: HttpRequest, queryset: QuerySet):
+        queryset.update(is_verified=False)
+
+    unverified_account.short_description = 'Unverify account'
 
 
 admin.site.register(User, CustomUserAdmin)

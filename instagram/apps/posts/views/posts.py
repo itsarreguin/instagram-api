@@ -1,5 +1,11 @@
 """ Views module for Posts app """
 
+# Python standard library
+from typing import Any
+
+# Django REST Framework
+from rest_framework.request import Request
+from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -46,12 +52,12 @@ class PostViewSet(viewsets.ModelViewSet):
 
         return [permission() for permission in permissions]
 
-    def list(self, request, url = None, *args, **kwargs):
+    def list(self, request: Request, url = None, *args: Any, **kwargs: Any) -> Response:
         serializer = self.serializer_class(self.get_queryset(), many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def create(self, request, *args, **kwargs):
+    def create(self, request: Request, *args: Any, **kwargs: Any) -> Response:
         serializer_class = self.get_serializer_class()
 
         serializer = serializer_class(data=request.data, context={ 'request': request })
@@ -63,7 +69,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def retrieve(self, request, url = None, *args, **kwargs):
+    def retrieve(self, request: Request, url = None, *args: Any, **kwargs: Any) -> Response:
         queryset = self.get_queryset(url=url)
         serializer_class = self.get_serializer_class()
 
@@ -77,7 +83,7 @@ class PostViewSet(viewsets.ModelViewSet):
             status = status.HTTP_404_NOT_FOUND
         )
 
-    def update(self, request, url = None, *args, **kwargs):
+    def update(self, request: Request, url = None, *args: Any, **kwargs: Any) -> Response:
         queryset = self.get_queryset(url=url)
         serializer_class = self.get_serializer_class()
 
@@ -96,10 +102,10 @@ class PostViewSet(viewsets.ModelViewSet):
             status = status.HTTP_404_NOT_FOUND
         )
 
-    def partial_update(self, request, *args, **kwargs):
+    def partial_update(self, request: Request, *args: Any, **kwargs: Any) -> Response:
         return super().partial_update(request, *args, **kwargs)
 
-    def destroy(self, request, url = None, *args, **kwargs):
+    def destroy(self, request: Request, url = None, *args: Any, **kwargs: Any) -> Response:
         post = self.get_queryset(url=url)
 
         if post:

@@ -13,7 +13,7 @@ from instagram.apps.users.views import UserAuthViewSet
 app_name: str = 'users'
 
 router = DefaultRouter()
-router.register(prefix=r'users', viewset=UserViewSet, basename='users')
+router.register(prefix=r'auth', viewset=UserAuthViewSet, basename='auth')
 router.register(prefix=r'users', viewset=UserViewSet, basename='users')
 
 urlpatterns: List[path] = [
