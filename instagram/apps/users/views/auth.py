@@ -10,13 +10,13 @@ from rest_framework.decorators import action
 from rest_framework import status
 
 # Instagram models
-from instagram.apps.users.models import User
+from instagram.core.models import User
 # Instagram serializers
-from instagram.apps.users.serializers import (
-    UserModelSerializer,
-    UserSignUpSerializer,
+from instagram.apps.users.serializers import UserModelSerializer
+from instagram.apps.users.serializers.auth import (
+    SignUpSerializer,
     AccountVerificationSerializer,
-    UserLoginSerializer
+    LoginSerializer
 )
 
 
@@ -43,13 +43,13 @@ class UserAuthViewSet(mixins.RetrieveModelMixin,
     def get_serializer_class(self):
         """ Returns a serializer class depends on the action """
         if self.action == 'signup':
-            return UserSignUpSerializer
+            return SignUpSerializer
 
         if self.action == 'verification':
             return AccountVerificationSerializer
 
         if self.action == 'login':
-            return UserLoginSerializer
+            return LoginSerializer
 
     @action(detail=False, methods=['POST'])
     def signup(self, request: Request):

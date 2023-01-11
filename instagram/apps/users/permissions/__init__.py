@@ -1,0 +1,1 @@
+from instagram.apps.users.permissions.users import IsAccountOwner as IsAccountOwner

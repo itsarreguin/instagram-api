@@ -1,0 +1,1 @@
+from instagram.apps.users.models.profile import Profile as Profile

@@ -1,4 +1,4 @@
-""" User permission classes """
+""" User app permission classes """
 
 # Django REST Framework
 from rest_framework.permissions import BasePermission
