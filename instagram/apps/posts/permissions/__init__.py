@@ -1,1 +1,1 @@
-from instagram.apps.posts.permissions.posts import IsPostOwner as IsPostOwner
+from instagram.apps.posts.permissions.posts import IsPostAuthor as IsPostAuthor

@@ -13,7 +13,10 @@ from rest_framework import status
 # Instagram models
 from instagram.core.models import User
 # Instagram serializers
-from instagram.apps.users.serializers import UserModelSerializer
+from instagram.apps.users.serializers import (
+    UserModelSerializer,
+    UserSerializer
+)
 # Instagram permissions
 from instagram.apps.users.permissions import IsAccountOwner
 
@@ -35,10 +38,14 @@ class UserViewSet(viewsets.ModelViewSet):
         return User.objects.filter(username=username).first()
 
     def get_serializer_class(self):
-        if self.action in ['retrieve', 'update', 'partial_update', 'destroy']:
+        """ Return serializers depends on the action """
+        if self.action in ['retrieve', 'destroy']:
             return UserModelSerializer
+        if self.action in ['update', 'partial_update']:
+            return UserSerializer
 
     def get_permissions(self):
+        """ Add permissions for user actions """
         permissions = [IsAuthenticated]
 
         if self.action in ['retrieve', 'update', 'partial_update', 'destroy']:
@@ -82,8 +89,9 @@ class UserViewSet(viewsets.ModelViewSet):
             status = status.HTTP_404_NOT_FOUND
         )
 
-    def partial_update(self, request: Request, *args: Any, **kwargs: Any) -> Response:
-        return super().partial_update(request, *args, **kwargs)
+    def partial_update(self, request: Request, username: str, *args: Any, **kwargs: Any) -> Response:
+        # TODO: Implementation soon
+        pass
 
     def destroy(self, request: Request, username: str, *args: Any, **kwargs: Any) -> Response:
         queryset = self.get_queryset(username=username)

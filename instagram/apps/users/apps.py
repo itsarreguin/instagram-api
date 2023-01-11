@@ -10,4 +10,4 @@ class UsersConfig(AppConfig):
     verbose_name: str = 'Users'
 
     def ready(self) -> None:
-        import instagram.signals.profile
+        from instagram.signals import profile

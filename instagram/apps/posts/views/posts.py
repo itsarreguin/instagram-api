@@ -18,7 +18,7 @@ from instagram.apps.posts.serializers import (
     PostDetailSerializer,
 )
 # Instagram permissions
-from instagram.apps.posts.permissions import IsPostOwner
+from instagram.apps.posts.permissions import IsPostAuthor
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -48,7 +48,7 @@ class PostViewSet(viewsets.ModelViewSet):
         permissions = [IsAuthenticated]
 
         if self.action in ['update', 'partial_update', 'destroy']:
-            permissions.append(IsPostOwner)
+            permissions.append(IsPostAuthor)
 
         return [permission() for permission in permissions]
 

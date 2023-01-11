@@ -10,4 +10,4 @@ class PostsConfig(AppConfig):
     verbose_name: str = 'Post'
 
     def ready(self) -> None:
-        import instagram.signals.posts
+        from instagram.signals import posts
