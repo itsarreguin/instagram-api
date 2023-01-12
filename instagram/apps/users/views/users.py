@@ -30,6 +30,15 @@ class UserViewSet(viewsets.ModelViewSet):
 
     lookup_field = 'username'
 
+    def get_permissions(self):
+        """ Add permissions for user actions """
+        permissions = [IsAuthenticated]
+
+        if self.action in ['retrieve', 'update', 'partial_update', 'destroy']:
+            permissions.append(IsAccountOwner)
+
+        return [permission() for permission in permissions]
+
     def get_queryset(self, username: str = None):
         """ Returns queryset type if username is present """
         if not username:
@@ -43,15 +52,6 @@ class UserViewSet(viewsets.ModelViewSet):
             return UserModelSerializer
         if self.action in ['update', 'partial_update']:
             return UserSerializer
-
-    def get_permissions(self):
-        """ Add permissions for user actions """
-        permissions = [IsAuthenticated]
-
-        if self.action in ['retrieve', 'update', 'partial_update', 'destroy']:
-            permissions.append(IsAccountOwner)
-
-        return [permission() for permission in permissions]
 
     def retrieve(self, request: Request, username: str, *args: Any, **kwargs: Any) -> Response:
         serializer_class = self.get_serializer_class()

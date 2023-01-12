@@ -29,6 +29,14 @@ class PostViewSet(viewsets.ModelViewSet):
 
     lookup_field = 'url'
 
+    def get_permissions(self):
+        permissions = [IsAuthenticated]
+
+        if self.action in ['update', 'partial_update', 'destroy']:
+            permissions.append(IsPostAuthor)
+
+        return [permission() for permission in permissions]
+
     def get_queryset(self, url: str = None):
         if url is None:
             return self.get_serializer().Meta.model.objects.all()
@@ -43,14 +51,6 @@ class PostViewSet(viewsets.ModelViewSet):
             return PostDetailSerializer
         if self.action in ['update', 'partial_update', 'destroy']:
             return PostModelSerializer
-
-    def get_permissions(self):
-        permissions = [IsAuthenticated]
-
-        if self.action in ['update', 'partial_update', 'destroy']:
-            permissions.append(IsPostAuthor)
-
-        return [permission() for permission in permissions]
 
     def list(self, request: Request, url = None, *args: Any, **kwargs: Any) -> Response:
         serializer = self.serializer_class(self.get_queryset(), many=True)

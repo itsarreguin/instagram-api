@@ -9,4 +9,4 @@ class IsAccountOwner(BasePermission):
 
     def has_object_permission(self, request, view, obj):
         """ Verify if the object and user are the same """
-        return request.user == obj
+        return obj.user == request.user

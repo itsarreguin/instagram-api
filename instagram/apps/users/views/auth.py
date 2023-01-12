@@ -18,6 +18,8 @@ from instagram.apps.users.serializers.auth import (
     AccountVerificationSerializer,
     LoginSerializer
 )
+# Instagram tasks
+from instagram.apps.users.tasks import send_verification_email
 
 
 class UserAuthViewSet(mixins.RetrieveModelMixin,
@@ -60,6 +62,9 @@ class UserAuthViewSet(mixins.RetrieveModelMixin,
 
         if serializer.is_valid(raise_exception=True):
             user = serializer.save()
+
+            send_verification_email.apply_async(args=[user.id], countdown=5)
+
             data = UserModelSerializer(instance=user).data
 
             return Response(data=data, status=status.HTTP_201_CREATED)

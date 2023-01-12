@@ -15,8 +15,6 @@ from rest_framework.validators import UniqueValidator
 
 # Instagram models
 from instagram.core.models import User
-# Instagram tasks
-from instagram.apps.users.tasks import send_verification_email
 
 
 class SignUpSerializer(serializers.Serializer):
@@ -73,9 +71,7 @@ class SignUpSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         validated_data.pop('password_confirmation')
-
         user = User.objects.create_user(**validated_data)
-        send_verification_email.apply_async(args=[user.id], countdown=5)
 
         return user
 
@@ -109,6 +105,7 @@ class AccountVerificationSerializer(serializers.Serializer):
         payload = self.context['payload']
         user = User.objects.get(username=payload['user'])
         user.is_verified = True
+
         user.save()
 
 
