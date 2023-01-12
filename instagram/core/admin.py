@@ -17,8 +17,8 @@ class CustomUserAdmin(UserAdmin):
         'username',
         'first_name',
         'last_name',
+        'is_active',
         'is_verified',
-        'is_active'
     ]
 
     list_display_links = ['username', 'first_name',]
