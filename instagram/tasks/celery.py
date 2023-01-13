@@ -10,6 +10,7 @@ from celery import Celery
 from django.apps import AppConfig
 from django.apps import apps
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 
 
 if not settings.configured:
@@ -27,8 +28,8 @@ celery.config_from_object(obj='django.conf:settings', namespace='CELERY')
 
 class CeleryAppConfig(AppConfig):
     """ Config class """
-    name = 'instagram.tasks'
-    verbose_name: str = 'Celery'
+    name: str = 'instagram.tasks'
+    verbose_name: str = _('Celery')
 
     def ready(self):
         installed_apps = [app_config.name for app_config in apps.get_app_configs()]
