@@ -1,0 +1,3 @@
+from instagram.apps.authentication.serializers.auth import SignUpSerializer as SignUpSerializer
+from instagram.apps.authentication.serializers.auth import AccountVerificationSerializer as AccountVerificationSerializer
+from instagram.apps.authentication.serializers.auth import LoginSerializer as LoginSerializer
