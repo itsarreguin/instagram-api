@@ -65,9 +65,13 @@ class UserAuthViewSet(mixins.RetrieveModelMixin,
 
             send_verification_email.apply_async(args=[user.id], countdown=5)
 
-            data = UserModelSerializer(instance=user).data
-
-            return Response(data=data, status=status.HTTP_201_CREATED)
+            return Response(
+                data = {
+                    'messgae': 'Account has been created successfully',
+                    'data': UserModelSerializer(instance=user).data
+                },
+                status = status.HTTP_201_CREATED
+            )
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
