@@ -16,14 +16,14 @@ from instagram.tasks import celery
 # Instagram models
 from instagram.core.models import User
 # Instagram utils
-from instagram.utils.mail import gen_verification_token
+from instagram.utils.token import generate_user_token
 
 
 @celery.task(max_retries=4)
 def send_verification_email(user_id):
     """ Celery task that helps to send an email verification """
     user = User.objects.get(pk=user_id)
-    verification_token = gen_verification_token(user=user)
+    verification_token = generate_user_token(user, exp_mins=15, token_type='verification_email')
 
     subject: str = 'Account verification'
     template = render_to_string(
