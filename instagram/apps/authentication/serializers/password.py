@@ -5,7 +5,10 @@ from rest_framework import serializers
 
 
 class PasswordResetSerializer(serializers.Serializer):
-    """"""
+    """ Password reset serializer class
+
+    Verify the new password to reset the old or forgot password.
+    """
 
     password = serializers.CharField(min_length=8, max_length=100)
     password_confirmation = serializers.CharField(min_length=8, max_length=100)
