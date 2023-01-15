@@ -5,10 +5,7 @@ from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 
-# Celery imports
-from celery import shared_task
-
-# Pillo imports
+# Pillow imports
 from PIL import Image
 
 # Instagram tasks
@@ -23,14 +20,19 @@ from instagram.utils.token import generate_user_token
 def send_verification_email(user_id):
     """ Celery task that helps to send an email verification """
     user = User.objects.get(pk=user_id)
-    verification_token = generate_user_token(user, exp_mins=15, token_type='verification_email')
+
+    account_verification_token = generate_user_token(
+        user = user,
+        exp_mins = 15,
+        token_type = 'verification_email'
+    )
 
     subject: str = 'Account verification'
     template = render_to_string(
         template_name='emails/account_verification.html',
         context={
-            'token': verification_token,
-            'user': user
+            'user': user,
+            'token': account_verification_token,
         }
     )
     from_email: str = settings.DEFAULT_FROM_EMAIL
