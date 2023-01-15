@@ -2,8 +2,7 @@
 
 # Django imports
 from django.conf import settings
-from django.core.mail import EmailMultiAlternatives
-from django.template.loader import render_to_string
+from django.utils.translation import gettext_lazy as _
 
 # Pillow imports
 from PIL import Image
@@ -14,12 +13,17 @@ from instagram.tasks import celery
 from instagram.core.models import User
 # Instagram utils
 from instagram.utils.token import generate_user_token
+from instagram.utils.mail import send_email_multi_alternatives
 
 
 @celery.task(max_retries=4)
-def send_verification_email(user_id):
+def send_verification_email(user_id: int) -> None:
     """ Celery task that helps to send an email verification """
-    user = User.objects.get(pk=user_id)
+
+    try:
+        user = User.objects.get(pk=user_id)
+    except User.DoesNotExist:
+        return None
 
     account_verification_token = generate_user_token(
         user = user,
@@ -27,19 +31,16 @@ def send_verification_email(user_id):
         token_type = 'verification_email'
     )
 
-    subject: str = 'Account verification'
-    template = render_to_string(
+    send_email_multi_alternatives(
+        subject=_('Account verification'),
         template_name='emails/account_verification.html',
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        to=[user.email],
         context={
             'user': user,
-            'token': account_verification_token,
+            'token': account_verification_token
         }
     )
-    from_email: str = settings.DEFAULT_FROM_EMAIL
-
-    msg = EmailMultiAlternatives(subject, template, from_email, to=[user.email])
-    msg.attach_alternative(template, 'text/html')
-    msg.send(fail_silently=False)
 
 
 @celery.task
