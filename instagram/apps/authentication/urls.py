@@ -34,8 +34,8 @@ urlpatterns: List[path] = [
         view = RequestPasswordResetAPIView.as_view(),
         name = 'request-password-reset'
     ),
-    path(
-        route = 'auth/password/reset/<str:token>/',
+    re_path(
+        route = r'auth/password/reset/(?P<token>[a-zA-Z0-9\._-]+)/',
         view = PasswordResetAPIView.as_view(),
         name = 'reset-password'
     )
