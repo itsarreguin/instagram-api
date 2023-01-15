@@ -13,8 +13,8 @@ from instagram.utils.token import generate_user_token
 
 
 @celery.task(max_retries=3)
-def password_reset_email(user_id):
-    """"""
+def password_reset_email(user_id: int, path: str):
+    """ Send password rest email to the requesting user """
     user = get_user_model().objects.get(id=user_id)
 
     reset_password_token = generate_user_token(
@@ -28,7 +28,8 @@ def password_reset_email(user_id):
         template_name = 'emails/password_reset.html',
         context = {
             'user': user,
-            'token': reset_password_token
+            'token': reset_password_token,
+            'path': path
         }
     )
 

@@ -27,28 +27,30 @@ class RequestPasswordResetAPIView(APIView):
     """
 
     def post(self, request: Request, *args: Any, **kwargs: Any):
-        user = get_user_model().objects.get(email=request.data['email'])
+        try:
+            user = get_user_model().objects.get(email=request.data['email'])
 
-        if user:
-            password_reset_email.apply_async(args=[user.id])
+            if user:
+                password_reset_email.apply_async(args=[user.id, request.get_host()])
 
+                return Response(
+                    data = {
+                        'message': 'Successful operation.',
+                        'more_info': f'Password reset email sent to {user.email}. Please check your address.'
+                    },
+                    status = status.HTTP_200_OK
+                )
+
+        except (TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
             return Response(
-                data = {
-                    'message': 'Successful operation.',
-                    'more_info': f'Password reset email sent to {user.email}. Please check your address.'
-                },
-                status = status.HTTP_200_OK
+                data = { 'detail': 'User with this email not found.' },
+                status = status.HTTP_404_NOT_FOUND
             )
-
-        return Response(
-            data = { 'detail': 'User with this email not found.' },
-            status = status.HTTP_404_NOT_FOUND
-        )
 
 
 class PasswordResetAPIView(APIView):
     """
-    Verify user token
+    Verify user token an change the old password
     """
 
     def post(self, request: Request, token: str, *args: Any, **kwargs: Any):
