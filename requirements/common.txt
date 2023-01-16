@@ -10,19 +10,11 @@ asgiref==3.6.0
 # Distributed Task Queue
 celery[amqp]==5.2.7
 
-# Websockets
-channels==4.0.0
-channels-redis==4.0.0
-
-# ASGI Server for Django
-daphne==4.0.0
-
 # Django framework
-django==4.1.4
+django==4.1.5
 
 # Django REST framework and extensions
 djangorestframework==3.14.0
-django-oauth-toolkit==2.2.0
 
 # Cross-Orgin Resource Sharing (CORS) handler
 django-cors-headers==3.13.0
