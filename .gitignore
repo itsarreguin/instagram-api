@@ -332,4 +332,8 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Postgresql files
+*.pg_service.conf
+*.postgres_pass
+
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows,linux,python,django
