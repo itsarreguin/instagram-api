@@ -66,6 +66,16 @@ pip install -r requirements.txt
 
 ---
 
+### Run migrations
+
+Before to start using the project run database migrations using the following command.
+
+```shell
+python manage.py migrate
+```
+
+---
+
 ### Running the API
 
 Once the dependencies are installed you can start running the API
@@ -89,6 +99,8 @@ If you wanna create an admin superuser run the next command and fill in all fiel
 ```shell
 python manage.py createsuperuser
 ```
+
+After that, run the server again and visit admin site [localhost:8000/admin/](http://localhost:8000/admin/)
 
 ### Celery and RabbitMQ
 
