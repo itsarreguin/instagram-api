@@ -22,6 +22,6 @@ def generate_user_token(user: User, exp_mins: int = None, token_type: str = None
         'exp': int(exp_date.timestamp()),
         'type': token_type
     }
-    token = jwt.encode(payload, key=settings.SECRET_KEY, algorithm='HS256')
+    token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
 
     return token

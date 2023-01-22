@@ -67,7 +67,7 @@ class AuthenticationViewSet(mixins.RetrieveModelMixin,
 
             return Response(
                 data = {
-                    'messgae': 'Account has been created successfully',
+                    'message': 'Account has been created successfully',
                     'data': UserModelSerializer(instance=user).data
                 },
                 status = status.HTTP_201_CREATED

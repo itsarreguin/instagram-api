@@ -24,7 +24,7 @@ git clone git@github.com:itsarreguin/instagram-api.git
 
 ---
 
-### Create a virtual env
+### Create a virtualenv
 
 To create the Python virtual environment we will use the default python venv module.
 
@@ -48,7 +48,7 @@ python .\<vitualenv_name>\Scripts\activate
 
 #### Deactivation
 
-To deactivate your virtualenv only use the next command, this works on the three operating systems.
+To defuse your virtualenv only use the next command, this works on the three operating systems.
 
 ```shell
 deactivate
@@ -163,7 +163,7 @@ If you wanna use Redis to run tasks follow the next steps
     + Repository: [github.com/celery/celery](https://www.github.com/celery/celery/)
 
 4. PyJWT
-    + Repositroy: [github.com/jpadilla/pyjwt](https://github.com/jpadilla/pyjwt)
+    + Repository: [github.com/jpadilla/pyjwt](https://github.com/jpadilla/pyjwt)
 
 ### Credits
 
