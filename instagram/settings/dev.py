@@ -31,11 +31,11 @@ DATABASES = {
 # Channel layers
 # https://channels.readthedocs.io/en/stable/topics/channel_layers.html
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer"
-    }
-}
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels.layers.InMemoryChannelLayer"
+#     }
+# }
 
 # Cache framework
 # https://docs.djangoproject.com/en/4.1/topics/cache/

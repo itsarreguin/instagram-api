@@ -1,4 +1,12 @@
-from instagram.apps.authentication.serializers.auth import SignUpSerializer as SignUpSerializer
-from instagram.apps.authentication.serializers.auth import AccountVerificationSerializer as AccountVerificationSerializer
-from instagram.apps.authentication.serializers.auth import LoginSerializer as LoginSerializer
-from instagram.apps.authentication.serializers.password import PasswordResetSerializer as PasswordResetSerializer
+from instagram.apps.authentication.serializers.auth import SignUpSerializer
+from instagram.apps.authentication.serializers.auth import AccountVerificationSerializer
+from instagram.apps.authentication.serializers.auth import LoginSerializer
+from instagram.apps.authentication.serializers.password import PasswordResetSerializer
+
+
+__all__ = [
+    'SignUpSerializer',
+    'AccountVerificationSerializer',
+    'LoginSerializer',
+    'PasswordResetSerializer',
+]

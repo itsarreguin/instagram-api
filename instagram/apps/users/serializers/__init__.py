@@ -1,2 +1,8 @@
-from instagram.apps.users.serializers.users import UserModelSerializer as UserModelSerializer
-from instagram.apps.users.serializers.users import UserSerializer as UserSerializer
+from instagram.apps.users.serializers.users import UserModelSerializer
+from instagram.apps.users.serializers.users import UserSerializer
+
+
+__all__ = [
+    'UserModelSerializer',
+    'UserSerializer'
+]

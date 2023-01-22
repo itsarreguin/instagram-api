@@ -1,1 +1,4 @@
-from instagram.apps.posts.permissions.posts import IsPostAuthor as IsPostAuthor
+from instagram.apps.posts.permissions.posts import IsPostAuthor
+
+
+__all__ = ['IsPostAuthor']
