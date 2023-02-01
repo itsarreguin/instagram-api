@@ -109,7 +109,6 @@ class AccountVerificationSerializer(serializers.Serializer):
         user.save()
 
 
-
 class LoginSerializer(serializers.Serializer):
     """User login serializer class
 
