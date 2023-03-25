@@ -17,6 +17,7 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS += ['django_extensions']
 
+
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
@@ -58,9 +59,13 @@ CELERY_TASK_EAGER_PROPAGATES = True
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.mailtrap.io'
 EMAIL_PORT = 2525
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER_DEV')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD_DEV')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER_DEV')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD_DEV')
 
 
 # CORS
-CORS_ALLOWED_ORIGINS = []
+CORS_ALLOWED_ORIGINS = [
+    'http://127.0.0.1:8000',
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:8080',
+]

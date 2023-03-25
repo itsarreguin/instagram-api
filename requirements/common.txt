@@ -11,7 +11,7 @@ asgiref==3.6.0
 celery[amqp]==5.2.7
 
 # Django framework
-django==4.1.5
+django==3.2.18
 
 # Django REST framework and extensions
 djangorestframework==3.14.0
@@ -25,14 +25,14 @@ flower==1.2.0
 # Image manipulation
 pillow==9.3.0
 
+# Python library to read .env files
+python-dotenv==1.0.0
+
 # PostgreSQL database adapter
 psycopg2==2.9.5
 
 # JSON Web Token
 pyjwt==2.6.0
-
-# Env variables
-python-dotenv==0.21.0
 
 # Redis python client
 redis==4.4.0
