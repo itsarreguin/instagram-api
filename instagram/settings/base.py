@@ -3,23 +3,16 @@
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 # Project path
 PROJECT_PACKAGE = Path(__file__).resolve().parent.parent
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = PROJECT_PACKAGE.parent
 
+load_dotenv()
 
-# Application definition
-ASGI_APPLICATION = 'instagram.asgi.application'
-WSGI_APPLICATION = 'instagram.wsgi.application'
-
-
-# Auth user model
-AUTH_USER_MODEL = 'core.User'
-
-
-# Application definition
 
 DJANGO_APPS = [
     'django.contrib.admin',
@@ -47,6 +40,13 @@ PROJECT_APPS = [
 THIRD_APPS = []
 
 INSTALLED_APPS = DJANGO_APPS + DJANGO_REST_APPS + PROJECT_APPS + THIRD_APPS
+
+
+# Application definition
+WSGI_APPLICATION = 'instagram.wsgi.application'
+
+# Auth user model
+AUTH_USER_MODEL = 'core.User'
 
 
 MIDDLEWARE = [
@@ -91,6 +91,7 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.ScryptPasswordHasher',
 ]
 
+
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
@@ -121,7 +122,7 @@ REST_FRAMEWORK = {
 # Celery configuration
 # https://docs.celeryq.dev/en/stable/django/first-steps-with-django.html#using-celery-with-django
 
-CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL')
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 
@@ -142,7 +143,7 @@ USE_TZ = True
 ADMIN_URL = 'admin/'
 
 # Email settings
-DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
 
 
 # Default primary key field type
