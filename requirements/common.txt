@@ -11,7 +11,7 @@ asgiref==3.6.0
 celery[amqp]==5.2.7
 
 # Django framework
-django==3.2.18
+django==4.1.7
 
 # Django REST framework and extensions
 djangorestframework==3.14.0
