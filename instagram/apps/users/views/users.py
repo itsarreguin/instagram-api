@@ -2,12 +2,19 @@
 
 # Python standard library
 from typing import Any
+from typing import Type
+
+# Django imports
+from django.db.models import QuerySet
 
 # Django REST Framework
 from rest_framework import viewsets
 from rest_framework.request import Request
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.permissions import BasePermission
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.serializers import Serializer
+from rest_framework.serializers import ModelSerializer
 from rest_framework import status
 
 # Instagram models
@@ -30,7 +37,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
     lookup_field = 'username'
 
-    def get_permissions(self):
+    def get_permissions(self) -> Type[BasePermission]:
         """ Add permissions for user actions """
         permissions = [IsAuthenticated]
 
@@ -39,23 +46,23 @@ class UserViewSet(viewsets.ModelViewSet):
 
         return [permission() for permission in permissions]
 
-    def get_queryset(self, username: str = None):
+    def get_queryset(self, *args: tuple[any], **kwargs: dict[str, Any]) -> QuerySet:
         """ Returns queryset type if username is present """
-        if not username:
-            return User.objects.all()
+        if kwargs:
+            return User.objects.filter(*args, **kwargs).first()
 
-        return User.objects.filter(username=username).first()
+        return User.objects.all()
 
-    def get_serializer_class(self):
+    def get_serializer_class(self) -> Type[Serializer | ModelSerializer]:
         """ Return serializers depends on the action """
         if self.action in ['retrieve', 'destroy']:
             return UserModelSerializer
         if self.action in ['update', 'partial_update']:
             return UserSerializer
 
-    def retrieve(self, request: Request, username: str, *args: Any, **kwargs: Any) -> Response:
+    def retrieve(self, request: Request, *args: tuple[Any], **kwargs: dict[str, Any]) -> Response:
         serializer_class = self.get_serializer_class()
-        queryset = self.get_queryset(username=username)
+        queryset = self.get_queryset(username=kwargs['username'])
 
         serializer = serializer_class(instance=queryset)
 
@@ -67,9 +74,9 @@ class UserViewSet(viewsets.ModelViewSet):
             status = status.HTTP_404_NOT_FOUND
         )
 
-    def update(self, request: Request, username: str, *args: Any, **kwargs: Any) -> Response:
+    def update(self, request: Request, *args: tuple[Any], **kwargs: dict[str, Any]) -> Response:
         serializer_class = self.get_serializer_class()
-        queryset = self.get_queryset(username=username)
+        queryset = self.get_queryset(username=kwargs['username'])
 
         serializer = serializer_class(instance=queryset, data=request.data)
 
@@ -89,15 +96,15 @@ class UserViewSet(viewsets.ModelViewSet):
             status = status.HTTP_404_NOT_FOUND
         )
 
-    def partial_update(self, request: Request, username: str, *args: Any, **kwargs: Any) -> Response:
+    def partial_update(self, request: Request, *args: tuple[Any], **kwargs: dict[str, Any]) -> Response:
         # TODO: Implementation soon
         pass
 
-    def destroy(self, request: Request, username: str, *args: Any, **kwargs: Any) -> Response:
-        queryset = self.get_queryset(username=username)
+    def destroy(self, request: Request, *args: tuple[Any], **kwargs: dict[str, Any]) -> Response:
+        queryset = self.get_queryset(username=kwargs['username'])
 
         if queryset:
-            User.objects.filter(username=username).update(is_active=False)
+            queryset.update(is_active=False)
 
             return Response(
                 data = { 'message': 'User has been deleted' },

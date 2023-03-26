@@ -1,11 +1,17 @@
 """ Authentication views """
 
+# Python standard library
+from typing import Type
+
 # Django REST Framework
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework import mixins
 from rest_framework.permissions import AllowAny
+from rest_framework.permissions import BasePermission
+from rest_framework.serializers import Serializer
+from rest_framework.serializers import ModelSerializer
 from rest_framework.decorators import action
 from rest_framework import status
 
@@ -33,7 +39,7 @@ class AuthenticationViewSet(mixins.RetrieveModelMixin,
 
     queryset = User.objects.all()
 
-    def get_permissions(self):
+    def get_permissions(self) -> Type[BasePermission]:
         """ Add permissions depends on the action """
         permissions = []
 
@@ -42,7 +48,7 @@ class AuthenticationViewSet(mixins.RetrieveModelMixin,
 
         return [permission() for permission in permissions]
 
-    def get_serializer_class(self):
+    def get_serializer_class(self) -> Type[Serializer | ModelSerializer]:
         """ Returns a serializer class depends on the action """
         if self.action == 'signup':
             return SignUpSerializer
@@ -54,7 +60,7 @@ class AuthenticationViewSet(mixins.RetrieveModelMixin,
             return LoginSerializer
 
     @action(detail=False, methods=['POST'])
-    def signup(self, request: Request):
+    def signup(self, request: Request) -> Type[Response]:
         """ Users signup action """
         serializer_class = self.get_serializer_class()
 
@@ -76,7 +82,7 @@ class AuthenticationViewSet(mixins.RetrieveModelMixin,
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=False, methods=['POST'])
-    def verification(self, request: Request):
+    def verification(self, request: Request) -> Type[Response]:
         serializer_class = self.get_serializer_class()
 
         serializer = serializer_class(data=request.data)
@@ -92,7 +98,7 @@ class AuthenticationViewSet(mixins.RetrieveModelMixin,
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=False, methods=['POST'])
-    def login(self, request: Request):
+    def login(self, request: Request) -> Type[Response]:
         """ Users login action """
         serializer_class = self.get_serializer_class()
 

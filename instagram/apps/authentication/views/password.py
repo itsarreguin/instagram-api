@@ -33,7 +33,7 @@ class RequestPasswordResetAPIView(APIView):
     Obtain the user email and send password reset email
     """
 
-    def post(self, request: Request, *args: Any, **kwargs: Any):
+    def post(self, request: Request, *args: tuple[Any], **kwargs: dict[str, Any]) -> Response:
         try:
             user = get_user_model().objects.get(email=request.data['email'])
 
@@ -61,11 +61,11 @@ class PasswordResetAPIView(APIView):
     Verify user token an change the old or forgot password.
     """
 
-    def post(self, request: Request, token: str, *args: Any, **kwargs: Any):
+    def post(self, request: Request, *args: tuple[Any], **kwargs: dict[str, Any]) -> Response:
         serializer = PasswordResetSerializer(data=request.data)
 
         try:
-            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+            payload = jwt.decode(kwargs['token'], settings.SECRET_KEY, algorithms=['HS256'])
             user = get_user_model().objects.filter(username=payload['user']).first()
 
         except ExpiredSignatureError:
