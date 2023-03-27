@@ -17,7 +17,7 @@ from rest_framework import status
 from instagram.core.models import User
 from instagram.apps.users.models import Profile
 
-# Create your tests here.
+
 class BaseTestCase(TestCase):
 
     def setUp(self) -> None:
