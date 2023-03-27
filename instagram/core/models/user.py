@@ -151,3 +151,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self) -> str:
         return '%s' % self.first_name
+
+    @property
+    def total_likes(self) -> int:
+        return self.likes.count()
+
+    @property
+    def total_comments(self) -> int:
+        return self.comments.count()
