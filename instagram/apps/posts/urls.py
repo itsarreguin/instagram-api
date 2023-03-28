@@ -12,6 +12,7 @@ from rest_framework.routers import DefaultRouter
 # Instagram views
 from instagram.apps.posts.views import PostViewSet
 from instagram.apps.posts.views import LikeAPIView
+from instagram.apps.posts.views import CommentAPIView
 
 
 app_name: str = 'posts'
@@ -32,4 +33,14 @@ urlpatterns: List[path] = [
         view=LikeAPIView.as_view(),
         name='unlike'
     ),
+    path(
+        route='posts/<str:url>/comments/',
+        view=CommentAPIView.as_view(),
+        name='comment'
+    ),
+    path(
+        route='posts/<str:url>/comments/<int:id>/',
+        view=CommentAPIView.as_view(),
+        name='comment-destroy'
+    )
 ]
