@@ -45,12 +45,13 @@ class PostModelSerializer(serializers.ModelSerializer):
 class PostDetailSerializer(serializers.ModelSerializer):
 
     author = serializers.SerializerMethodField(read_only=True)
-
     url = serializers.HyperlinkedIdentityField(
         view_name = 'posts:posts-detail',
         lookup_field = 'url',
         read_only = True
     )
+    likes = serializers.SerializerMethodField('get_total_likes', read_only=True)
+    comments = serializers.SerializerMethodField('get_total_comments', read_only=True)
 
     class Meta:
         model = Post
@@ -60,17 +61,22 @@ class PostDetailSerializer(serializers.ModelSerializer):
             'url',
             'description',
             'author',
+            'likes',
+            'comments',
             'created',
             'modified'
         ]
 
-        extra_kwargs = {
-            'image': { 'read_only': True },
-            'description': { 'read_only': True },
-        }
+        read_only_fields = fields
 
-    def get_author(self, obj):
+    def get_author(self, obj) -> dict[str, str]:
         return {
             'username': obj.author.username,
             'full_name': obj.author.profile.full_name,
         }
+
+    def get_total_likes(self, obj) -> int:
+        return obj.likes.count()
+
+    def get_total_comments(self, obj) -> int:
+        return obj.comments.count()

@@ -59,9 +59,18 @@ class PostViewSet(viewsets.ModelViewSet):
             return PostModelSerializer
 
     def list(self, request: Request, *args: tuple[Any], **kwargs: dict[str, Any]) -> Response:
-        serializer = self.serializer_class(self.get_queryset(), many=True)
+        queryset = self.get_queryset()
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        serializer_class = self.get_serializer_class()
+        serializer = serializer_class(queryset, many=True, context={ 'request': request })
+
+        if len(queryset) > 0:
+            return Response(
+                data={ 'message': 'Posts list', 'posts': serializer.data },
+                status=status.HTTP_200_OK
+            )
+
+        return Response({ 'info': 'No posts data' }, status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request: Request, *args: tuple[Any], **kwargs: dict[str, Any]) -> Response:
         serializer_class = self.get_serializer_class()
