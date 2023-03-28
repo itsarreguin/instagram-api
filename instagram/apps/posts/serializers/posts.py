@@ -1,5 +1,6 @@
 """ Serializers module for Posts """
 
+# Django REST Framework
 from rest_framework import serializers
 
 # Instagram models
@@ -57,8 +58,8 @@ class PostDetailSerializer(serializers.ModelSerializer):
             'id',
             'image',
             'url',
-            'author',
             'description',
+            'author',
             'created',
             'modified'
         ]
@@ -72,5 +73,4 @@ class PostDetailSerializer(serializers.ModelSerializer):
         return {
             'username': obj.author.username,
             'full_name': obj.author.profile.full_name,
-            'date_joined': obj.author.date_joined
         }
