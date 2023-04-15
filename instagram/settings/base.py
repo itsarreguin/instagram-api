@@ -35,6 +35,7 @@ PROJECT_APPS = [
     'instagram.apps.authentication.apps.AuthConfig',
     'instagram.apps.users.apps.UsersConfig',
     'instagram.apps.posts.apps.PostsConfig',
+    'instagram.apps.notifications.apps.NotificationsConfig',
 ]
 
 THIRD_APPS = []
