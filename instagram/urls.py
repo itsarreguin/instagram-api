@@ -24,7 +24,7 @@ urlpatterns = [
 
     path(
         route = 'api/v1/',
-        view = include('instagram.apps.users.urls')
+        view = include('instagram.apps.accounts.urls')
     ),
     path(
         route = 'api/v1/',

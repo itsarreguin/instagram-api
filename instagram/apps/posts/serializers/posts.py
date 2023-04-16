@@ -6,7 +6,7 @@ from rest_framework import serializers
 # Instagram models
 from instagram.apps.posts.models import Post
 # Instagram serializers
-from instagram.apps.users.serializers import UserModelSerializer
+from instagram.apps.accounts.serializers import UserModelSerializer
 
 
 class PostCreateSerializer(serializers.ModelSerializer):

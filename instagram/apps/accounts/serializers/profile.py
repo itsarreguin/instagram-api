@@ -4,7 +4,7 @@
 from rest_framework import serializers
 
 # Instagram models
-from instagram.apps.users.models import Profile
+from instagram.apps.accounts.models import Profile
 
 
 class ProfileModelSerializer(serializers.ModelSerializer):

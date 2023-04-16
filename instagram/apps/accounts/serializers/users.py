@@ -9,7 +9,7 @@ from rest_framework import serializers
 # Instagram models
 from instagram.core.models import User
 # Instagram serializers
-from instagram.apps.users.serializers.profile import ProfileModelSerializer
+from instagram.apps.accounts.serializers.profile import ProfileModelSerializer
 
 
 class UserModelSerializer(serializers.ModelSerializer):

@@ -2,7 +2,7 @@
 from django.contrib import admin
 
 # Instagram models
-from instagram.apps.users.models import Profile
+from instagram.apps.accounts.models import Profile
 
 
 @admin.register(Profile)

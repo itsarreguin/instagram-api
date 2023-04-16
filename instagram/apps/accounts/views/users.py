@@ -20,12 +20,12 @@ from rest_framework import status
 # Instagram models
 from instagram.core.models import User
 # Instagram serializers
-from instagram.apps.users.serializers import (
+from instagram.apps.accounts.serializers import (
     UserModelSerializer,
     UserSerializer
 )
 # Instagram permissions
-from instagram.apps.users.permissions import IsAccountOwner
+from instagram.apps.accounts.permissions import IsAccountOwner
 
 
 class UserViewSet(viewsets.ModelViewSet):

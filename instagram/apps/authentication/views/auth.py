@@ -18,14 +18,14 @@ from rest_framework import status
 # Instagram models
 from instagram.core.models import User
 # Instagram serializers
-from instagram.apps.users.serializers import UserModelSerializer
+from instagram.apps.accounts.serializers import UserModelSerializer
 from instagram.apps.authentication.serializers import (
     SignUpSerializer,
     AccountVerificationSerializer,
     LoginSerializer
 )
 # Instagram tasks
-from instagram.apps.users.tasks import send_verification_email
+from instagram.apps.accounts.tasks import send_verification_email
 
 
 class AuthenticationViewSet(mixins.RetrieveModelMixin,

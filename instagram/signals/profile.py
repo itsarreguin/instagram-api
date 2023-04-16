@@ -10,7 +10,7 @@ from django.db.models import Model
 
 # Instagram models
 from instagram.core.models import User
-from instagram.apps.users.models import Profile
+from instagram.apps.accounts.models import Profile
 
 
 @receiver(post_save, sender=User)

@@ -2,7 +2,7 @@
 from django.urls import reverse
 
 # instagram tests
-from instagram.apps.users.tests import BaseTestCase
+from instagram.apps.accounts.tests import BaseTestCase
 # Instagram models
 from instagram.core.models import User
 from instagram.apps.posts.models import Post

@@ -10,13 +10,13 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
 # Instagram views
-from instagram.apps.users.views import UserViewSet
+from instagram.apps.accounts.views import UserViewSet
 
 
-app_name: str = 'users'
+app_name: str = 'accounts'
 
 router = DefaultRouter()
-router.register(prefix=r'users', viewset=UserViewSet, basename='users')
+router.register(prefix=r'accounts', viewset=UserViewSet, basename='users')
 
 urlpatterns: List[path] = [
 

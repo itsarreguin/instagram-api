@@ -15,7 +15,7 @@ from rest_framework import status
 
 # Instagram models
 from instagram.core.models import User
-from instagram.apps.users.models import Profile
+from instagram.apps.accounts.models import Profile
 
 
 class BaseTestCase(TestCase):
