@@ -82,7 +82,6 @@ class CommentAPIView(ActionsMixin):
 
         return Response({ 'message': 'Comments list', 'comments': serializer.data })
 
-
     def post(self, request: Request, *args: tuple[Any], **kwargs: dict[str, Any]) -> Response:
         data = request.data
         post = self.get_queryset(Post, url=kwargs['url']).first()

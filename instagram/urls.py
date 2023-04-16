@@ -24,6 +24,10 @@ urlpatterns = [
 
     path(
         route = 'api/v1/',
+        view = include('instagram.apps.authentication.urls')
+    ),
+    path(
+        route = 'api/v1/',
         view = include('instagram.apps.accounts.urls')
     ),
     path(
@@ -32,7 +36,7 @@ urlpatterns = [
     ),
     path(
         route = 'api/v1/',
-        view = include('instagram.apps.authentication.urls')
+        view = include('instagram.apps.notifications.urls')
     ),
     path(
         route = settings.ADMIN_URL,
