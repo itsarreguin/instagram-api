@@ -18,6 +18,7 @@ class Comment(BaseAbstractModel):
     )
     post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
     body = models.TextField(_('body'), max_length=455, blank=True, null=True)
+    url = models.CharField(_('url'), max_length=155, unique=True, blank=False, null=False)
 
     class Meta:
         verbose_name: str = _('Comment')
