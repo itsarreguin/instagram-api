@@ -1,11 +1,5 @@
 """ Custom user classes """
 
-from typing import (
-    Any,
-    Optional
-)
-
-from django.contrib.auth.models import UserManager as BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
@@ -13,84 +7,8 @@ from django.core.validators import RegexValidator
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
-
-class UserManager(BaseUserManager):
-
-    def _create_user(
-        self,
-        first_name: str = None,
-        last_name: Optional[str] = None,
-        username: str = None,
-        email: str = None,
-        password: str = None,
-        **extra_fields: Any
-    ):
-        if not username:
-            raise ValueError('Username is required field')
-        elif not email:
-            raise ValueError('Email address is required field')
-
-        email = self.normalize_email(email=email)
-
-        user = self.model(
-            first_name=first_name,
-            last_name=last_name,
-            username=username,
-            email=email,
-            **extra_fields
-        )
-        user.set_password(password)
-        user.save(using=self._db)
-
-        return user
-
-    def create_superuser(
-        self,
-        first_name: str = None,
-        last_name: Optional[str] = None,
-        username: str = None,
-        email: str = None,
-        password: str = None,
-        **extra_fields: Any
-    ):
-        extra_fields.setdefault('is_superuser', True)
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_verified', True)
-
-        user = self._create_user(
-            first_name=first_name,
-            last_name=last_name,
-            username=username,
-            email=email,
-            password=password,
-            **extra_fields
-        )
-
-        return user
-
-    def create_user(
-        self,
-        first_name: str = None,
-        last_name: Optional[str] = None,
-        username: str = None,
-        email: str = None,
-        password: str = None,
-        **extra_fields: Any
-    ):
-        extra_fields.setdefault('is_superuser', False)
-        extra_fields.setdefault('is_staff', False)
-        extra_fields.setdefault('is_verified', False)
-
-        user = self._create_user(
-            first_name=first_name,
-            last_name=last_name,
-            username=username,
-            email=email,
-            password=password,
-            **extra_fields
-        )
-
-        return user
+# Instagram managers
+from instagram.core.managers import UserManager
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -151,6 +69,14 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self) -> str:
         return '%s' % self.first_name
+
+    @property
+    def total_posts(self) -> int:
+        return self.posts.count()
+
+    @property
+    def total_notifications(self) -> int:
+        return self.notifications.count()
 
     @property
     def total_likes(self) -> int:
