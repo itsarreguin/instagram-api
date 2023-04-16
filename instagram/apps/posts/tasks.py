@@ -1,13 +1,10 @@
 """ Background tasks for Posts app """
 
 # Celery import
-from celery import shared_task
+from instagram import celery
 
 # Pillow imports
 from PIL import Image
-
-# Instagram tasks
-from instagram.tasks import celery
 
 
 @celery.task

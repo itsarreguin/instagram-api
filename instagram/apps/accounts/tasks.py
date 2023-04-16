@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from PIL import Image
 
 # Instagram tasks
-from instagram.tasks import celery
+from instagram import celery
 # Instagram models
 from instagram.core.models import User
 # Instagram utils

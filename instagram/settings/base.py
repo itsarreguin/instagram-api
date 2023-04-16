@@ -31,7 +31,6 @@ DJANGO_REST_APPS = [
 
 PROJECT_APPS = [
     'instagram.core.apps.CoreAppConfig',
-    'instagram.tasks.celery.CeleryAppConfig',
     'instagram.apps.authentication.apps.AuthConfig',
     'instagram.apps.accounts.apps.AccountsConfig',
     'instagram.apps.posts.apps.PostsConfig',

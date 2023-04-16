@@ -6,7 +6,7 @@ from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
 # Instagram tasks
-from instagram.tasks import celery
+from instagram import celery
 # Instagram utils
 from instagram.utils.token import generate_user_token
 from instagram.utils.mail import send_email_multi_alternatives
