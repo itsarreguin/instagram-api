@@ -18,6 +18,7 @@ class NotificationsSerializer(serializers.ModelSerializer):
         model: Type[Model] = Notification
         fields: List[str] = [
             'sender',
-            'receiver',
+            'category',
+            'is_read',
             'created',
         ]

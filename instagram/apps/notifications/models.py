@@ -11,6 +11,7 @@ class NoificationType(models.TextChoices):
 
     LIKE = 'like', _('Post liked')
     COMMENT = 'comment', _('Post commented')
+    FOLLOWER = 'follower', _('New follower')
 
 
 class Notification(BaseAbstractModel):
@@ -27,7 +28,8 @@ class Notification(BaseAbstractModel):
         verbose_name=_('category'),
         max_length=100, choices=NoificationType.choices
     )
-    object_slug = models.CharField(_('object slug'), max_length=255, null=True)
+    object_id = models.IntegerField(_('object slug'), blank=True, null=True)
+    is_read = models.BooleanField(_('is read'), default=False)
 
     class Meta:
         verbose_name: str = _('Notification')

@@ -2,8 +2,8 @@
 from typing import Any
 
 # Django Framework
-from django.db.models import Model
 from django.db.models import QuerySet
+from django.db.models import Model
 
 # Django REST Framework
 from rest_framework.views import APIView
@@ -16,8 +16,11 @@ from rest_framework import status
 from instagram.apps.posts.models import Post
 from instagram.apps.posts.models import Like
 from instagram.apps.posts.models import Comment
+from instagram.apps.notifications.models import NoificationType
 # Instagram serializers
 from instagram.apps.posts.serializers import CommentDetailSerializer
+# Instagram tasks
+from instagram.apps.notifications.tasks import send_notification
 
 
 class ActionsMixin(APIView):
@@ -36,8 +39,14 @@ class LikeAPIView(ActionsMixin):
     def post(self, request: Request, *args: tuple[Any], **kwargs: dict[str, Any]) -> Response:
         post = self.get_queryset(Post, url=kwargs['url']).first()
         if post:
-            Like.objects.create(user=request.user, post=post)
-
+            like = Like.objects.create(user=request.user, post=post)
+            if post.author != like.user:
+                send_notification.apply_async(kwargs={
+                    'sender_username': self.request.user.username,
+                    'receiver_username': like.user.username,
+                    'category': NoificationType.LIKE,
+                    'object_id': like.id
+                })
             return Response(
                 data={
                     'message': f'Like added to @{post.author.username} post'
@@ -53,7 +62,6 @@ class LikeAPIView(ActionsMixin):
 
         if post and like:
             like.delete()
-
             return Response(
                 data={ 'message': f'Like removed from {post.author.username} post' },
                 status=status.HTTP_200_OK
@@ -66,17 +74,16 @@ class CommentAPIView(ActionsMixin):
 
     permission_classes = [IsAuthenticated]
 
-    def get(self, request: Request, url: str = None, id: int = None, **kwargs: dict[str, Any]) -> Response:
+    def get(self, request: Request, **kwargs: dict[str, Any]) -> Response:
         serializer_class = CommentDetailSerializer
-
-        if id:
-            post = self.get_queryset(Post, url=url).first()
+        if id in kwargs:
+            post = self.get_queryset(Post, url=kwargs['url']).first()
             comment = self.get_queryset(Comment, post=post).first()
             serializer = serializer_class(instance=comment)
 
             return Response(serializer.data, status=status.HTTP_200_OK)
 
-        post = self.get_queryset(Post, url=url).first()
+        post = self.get_queryset(Post, url=kwargs['url']).first()
         comments = self.get_queryset(Comment, post=post)
         serializer = serializer_class(comments, many=True)
 
@@ -85,10 +92,15 @@ class CommentAPIView(ActionsMixin):
     def post(self, request: Request, *args: tuple[Any], **kwargs: dict[str, Any]) -> Response:
         data = request.data
         post = self.get_queryset(Post, url=kwargs['url']).first()
-
         if post:
-            Comment.objects.create(author=request.user, post=post, **data)
-
+            comment = Comment.objects.create(author=request.user, post=post, body=data['body'])
+            if comment.author != post.author:
+                send_notification.apply_async(kwargs={
+                    'sender_username': self.request.user.username,
+                    'receiver_username': comment.author.username,
+                    'category': NoificationType.COMMENT,
+                    'object_id': comment.id
+                })
             return Response(
                 data={ 'message': f'Comment added to @{post.author.username} post' },
                 status=status.HTTP_201_CREATED
@@ -102,7 +114,6 @@ class CommentAPIView(ActionsMixin):
     def delete(self, request: Request, *args: tuple[Any], **kwargs: dict[str, Any]) -> Response:
         post = self.get_queryset(Post, url=kwargs['url']).first()
         comment = self.get_queryset(Comment, id=kwargs['id'])
-
         if post and comment:
             comment.delete()
 

@@ -11,6 +11,7 @@ from django.db.models import Model
 
 # Instagram models
 from instagram.apps.posts.models import Post
+from instagram.apps.posts.models import Comment
 # Instagram utils
 from instagram.utils import RAND_CHARS
 
@@ -26,6 +27,14 @@ def generate_url(sender: Model, instance: Post, **kwargs: Any):
         instance (Post model): Instance of the same model that send a signal
     """
 
+    if not instance.url:
+        instance.url = get_random_string(length=32, allowed_chars=RAND_CHARS)
+        instance.save()
+
+
+@receiver(post_save, sender=Comment)
+def comment_url(sender: Model, instance: Comment, **kwargs) -> None:
+    """ Save comment url """
     if not instance.url:
         instance.url = get_random_string(length=32, allowed_chars=RAND_CHARS)
         instance.save()
