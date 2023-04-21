@@ -31,7 +31,6 @@ class SignUpSerializer(serializers.Serializer):
 
     first_name = serializers.CharField(min_length=2, max_length=30)
     last_name = serializers.CharField(min_length=2, max_length=30)
-
     username_regex_validator = RegexValidator(
         regex=r'^([\w\d\._]+[^\s\-@\*\[\{(\)\}\]\/\+:,;\\%&$]){2,30}$',
         message='Username can be only contains letters, numbers, . or _'
@@ -44,7 +43,6 @@ class SignUpSerializer(serializers.Serializer):
             username_regex_validator,
         ]
     )
-
     email_regex_validator = RegexValidator(
         regex=r'^([a-zA-Z0-9\._-]{3,}[^\s])@\w{2,25}\.\w{2,15}(\.\w{2,15})?$'
     )
@@ -54,7 +52,6 @@ class SignUpSerializer(serializers.Serializer):
             email_regex_validator
         ]
     )
-
     password = serializers.CharField(min_length=8, max_length=64)
     password_confirmation = serializers.CharField(min_length=8, max_length=64)
 
@@ -64,7 +61,6 @@ class SignUpSerializer(serializers.Serializer):
 
         if password != password_conf:
             raise serializers.ValidationError('Password didn\'t match')
-
         password_validation.validate_password(password)
 
         return data
@@ -125,7 +121,6 @@ class LoginSerializer(serializers.Serializer):
         password = data['password']
 
         user = authenticate(username=username, password=password)
-
         if not user:
             raise serializers.ValidationError('Invalid credentials')
         if not user.is_verified:

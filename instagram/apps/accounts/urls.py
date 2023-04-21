@@ -19,6 +19,5 @@ router = DefaultRouter()
 router.register(prefix=r'accounts', viewset=UserViewSet, basename='users')
 
 urlpatterns: List[path] = [
-
     path(route='', view=include(router.urls))
 ]

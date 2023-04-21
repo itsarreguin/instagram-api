@@ -24,7 +24,6 @@ router = DefaultRouter()
 router.register(prefix=r'auth', viewset=AuthenticationViewSet, basename='auth')
 
 urlpatterns: List[path] = [
-
     path(
         route = '',
         view = include(router.urls)

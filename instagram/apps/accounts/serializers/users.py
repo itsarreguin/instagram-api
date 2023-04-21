@@ -26,7 +26,6 @@ class UserModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-
         fields = [
             'username',
             'first_name',
@@ -48,7 +47,6 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         """ Meta class """
         model = User
-
         fields = [
             'username',
             'email',
@@ -57,7 +55,6 @@ class UserSerializer(serializers.ModelSerializer):
 
     def validate_username(self, data: Any):
         username = User.objects.filter(username=data).exists()
-
         if username:
             raise serializers.ValidationError('This username is taken')
 
@@ -65,7 +62,6 @@ class UserSerializer(serializers.ModelSerializer):
 
     def validate_email(self, data: Any):
         email = User.objects.filter(email=data).exists()
-
         if email:
             raise serializers.ValidationError(
                 detail='An account with this email address already exist'
