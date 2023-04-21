@@ -60,10 +60,9 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def list(self, request: Request, *args: tuple[Any], **kwargs: dict[str, Any]) -> Response:
         queryset = self.get_queryset()
-
         serializer_class = self.get_serializer_class()
-        serializer = serializer_class(queryset, many=True, context={ 'request': request })
 
+        serializer = serializer_class(queryset, many=True, context={ 'request': request })
         if len(queryset) > 0:
             return Response(
                 data={ 'message': 'Posts list', 'posts': serializer.data },
@@ -76,7 +75,6 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer_class = self.get_serializer_class()
 
         serializer = serializer_class(data=request.data, context={ 'request': request })
-
         if serializer.is_valid(raise_exception=True):
             serializer.save()
 
@@ -89,7 +87,6 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer_class = self.get_serializer_class()
 
         serializer = serializer_class(instance=queryset, context={ 'request': request })
-
         if queryset:
             return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -103,7 +100,6 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer_class = self.get_serializer_class()
 
         serializer = serializer_class(instance=queryset, data=request.data)
-
         if queryset:
             if serializer.is_valid(raise_exception=True):
                 serializer.save()
@@ -122,7 +118,6 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request: Request, *args: tuple[Any], **kwargs: dict[str, Any]) -> Response:
         post = self.get_queryset(url=kwargs['url']).first()
-
         if post:
             post.delete()
 

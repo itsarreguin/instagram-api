@@ -9,6 +9,7 @@ from django.db.models import QuerySet
 # Django REST Framework
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
+from rest_framework.generics import get_object_or_404
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -16,21 +17,20 @@ from rest_framework.serializers import BaseSerializer
 from rest_framework import status
 
 # Instagram models
+from instagram.core.models import User
 from instagram.apps.notifications.models import Notification
 from instagram.apps.notifications.models import NoificationType
 # Instagram serializers
 from instagram.apps.notifications.serializers import NotificationsSerializer
-# Instagram permissions
-from instagram.apps.accounts.permissions import IsAccountOwner
 
 
 class NotificationsAPIView(ListAPIView):
 
     serializer_class: Type[BaseSerializer] = NotificationsSerializer
-    permission_classes = [IsAuthenticated, IsAccountOwner]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self) -> QuerySet:
-        return self.get_serializer().Meta.model.objects.filter(is_read=False).all()
+        return self.get_serializer().Meta.model.objects.all()
 
     def list(self, request: Request, **kwargs: Dict[str, Any]) -> Response:
         queryset = self.get_queryset()

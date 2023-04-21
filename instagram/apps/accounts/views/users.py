@@ -40,7 +40,6 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_permissions(self) -> Type[BasePermission]:
         """ Add permissions for user actions """
         permissions = [IsAuthenticated]
-
         if self.action in ['retrieve', 'update', 'partial_update', 'destroy']:
             permissions.append(IsAccountOwner)
 
@@ -65,7 +64,6 @@ class UserViewSet(viewsets.ModelViewSet):
         queryset = self.get_queryset(username=kwargs['username'])
 
         serializer = serializer_class(instance=queryset)
-
         if queryset:
             return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -102,7 +100,6 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request: Request, *args: tuple[Any], **kwargs: dict[str, Any]) -> Response:
         queryset = self.get_queryset(username=kwargs['username'])
-
         if queryset:
             queryset.update(is_active=False)
 
