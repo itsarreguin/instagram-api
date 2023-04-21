@@ -29,11 +29,14 @@ class NotificationsAPIView(ListAPIView):
     serializer_class: Type[BaseSerializer] = NotificationsSerializer
     permission_classes = [IsAuthenticated]
 
-    def get_queryset(self) -> QuerySet:
+    def get_queryset(self, *args: tuple[Any], **kwargs: dict[str, Any]) -> QuerySet:
+        if args or kwargs:
+            return self.get_serializer().Meta.model.objects.filter(*args, **kwargs)
+
         return self.get_serializer().Meta.model.objects.all()
 
     def list(self, request: Request, **kwargs: Dict[str, Any]) -> Response:
-        queryset = self.get_queryset()
+        queryset = self.get_queryset(receiver=self.request.user).all()
         if len(queryset) == 0:
             return Response(
                 data={ 'message': 'There are no notifications' },

@@ -43,7 +43,7 @@ class LikeAPIView(ActionsMixin):
             if post.author != like.user:
                 send_notification.apply_async(kwargs={
                     'sender_username': self.request.user.username,
-                    'receiver_username': like.user.username,
+                    'receiver_username': post.author.username,
                     'category': NoificationType.LIKE,
                     'object_id': like.id
                 })
@@ -90,14 +90,13 @@ class CommentAPIView(ActionsMixin):
         return Response({ 'message': 'Comments list', 'comments': serializer.data })
 
     def post(self, request: Request, *args: tuple[Any], **kwargs: dict[str, Any]) -> Response:
-        data = request.data
         post = self.get_queryset(Post, url=kwargs['url']).first()
         if post:
-            comment = Comment.objects.create(author=request.user, post=post, body=data['body'])
+            comment = Comment.objects.create(author=request.user, post=post, **request.data)
             if comment.author != post.author:
                 send_notification.apply_async(kwargs={
                     'sender_username': self.request.user.username,
-                    'receiver_username': comment.author.username,
+                    'receiver_username': post.author.username,
                     'category': NoificationType.COMMENT,
                     'object_id': comment.id
                 })
